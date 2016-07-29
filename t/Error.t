@@ -30,7 +30,7 @@ CONTENT
 		ok $result->errors->[0], "The following GET/POST parameter is required: short_code.";
 
 		is $result->as_string, <<'STRING', 'as_string';
-BAD REQUEST: The parameters provided were invalid. See response body for error messages.
+400: BAD REQUEST: The parameters provided were invalid. See response body for error messages.
 The following GET/POST parameter is required: short_code.
 STRING
 

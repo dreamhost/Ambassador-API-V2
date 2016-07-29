@@ -40,10 +40,16 @@ for human consumption.
 
 =cut
 
+sub _code_and_message {
+	my $self = shift;
+
+	return $self->code .': '.$self->message;
+}
+
 sub as_string {
 	my $self = shift;
 
-	return join '', map { "$_\n" } $self->message, @{$self->errors};
+	return join '', map { "$_\n" } $self->_code_and_message, @{$self->errors};
 }
 
 
