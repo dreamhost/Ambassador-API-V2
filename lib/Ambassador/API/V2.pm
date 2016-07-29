@@ -4,9 +4,11 @@ package Ambassador::API::V2;
 use Moo;
 use v5.10;
 
-use Ambassador::API::V2::Role::HasJSON;
+with 'Ambassador::API::V2::Role::HasJSON';
 use HTTP::Tiny;
 use URI;
+use Ambassador::API::V2::Error;
+use Ambassador::API::V2::Result;
 
 our $VERSION = 0.001;
 
@@ -117,7 +119,15 @@ sub _make_url {
 	my $self = shift;
 	my $method = shift;
 
-	return URI->new($self->url . $method);
+	my $url = $self->url->clone;
+
+	# Ambassador is very sensitive to double slashes.
+	my $path = $url->path . join '/', $self->username, $self->key, 'json', $method;
+	$path =~ s{/{2,}}{/}g;
+
+	$url->path($path);
+
+	return $url;
 }
 
 sub _handle_response {
@@ -135,23 +145,21 @@ sub _request {
 
 	my $url = $self->_make_url($method);
 
-	my $response = $self->http->request(
-		uc $type,
-		$url,
-		{ content => $self->json->encode($args) }
-	);
+	my $opts = {};
+	$opts->{content} = $self->json->encode($args) if $args;
+	my $response = $self->http->request( uc $type, $url, $opts );
 
 	return $self->_handle_response($response);
 }
 
 sub post {
 	my $self = shift;
-	return $self->request('POST', @_);
+	return $self->_request('POST', @_);
 }
 
 sub get {
 	my $self = shift;
-	return $self->request('GET', @_);
+	return $self->_request('GET', @_);
 }
 
 1;

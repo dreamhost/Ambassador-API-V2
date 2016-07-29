@@ -2,6 +2,7 @@ package Ambassador::API::V2::Role::Response;
 # ABSTRACT: A response from the getambassador.com API v2
 
 use Moo::Role;
+use Carp;
 use Types::Standard ":types";
 with 'Ambassador::API::V2::Role::HasJSON';
 
@@ -49,7 +50,8 @@ has response => (
 sub _build_response {
 	my $self = shift;
 
-	my $content = $self->json->decode($self->http_response->{content});
+	my $content = eval { $self->json->decode($self->http_response->{content}); };
+	croak "Failed to decode @{[ $self->http_response->{content} ]}" if !$content;
 	return $content->{response};
 }
 
