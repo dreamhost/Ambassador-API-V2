@@ -8,6 +8,7 @@ use Ambassador::API::V2::Role::HasJSON;
 use HTTP::Tiny;
 use URI;
 
+our $VERSION = 0.001;
 
 =head1 SYNOPSIS
 
