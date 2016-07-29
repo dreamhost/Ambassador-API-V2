@@ -14,8 +14,7 @@ describe Result => sub {
     "code": "200",
     "message": "OK: The request was successful. See response body for additional data.",
     "data": {
-      "shortcode": [
-        {
+      "shortcode": {
           "valid": 1,
           "sandbox": "0",
           "discount_value": "abc123",
@@ -29,8 +28,7 @@ describe Result => sub {
           "custom1": "data1",
           "custom2": "data2",
           "custom3": "data3"
-        }
-      ]
+      }
     }
   }
 }
@@ -41,8 +39,8 @@ CONTENT
 		is $result->code, 		200;
 		is $result->message, 	"OK: The request was successful. See response body for additional data.";
 		ok $result->is_success;
-		ok $result->data->{shortcode}[0]{valid};
-		is $result->data->{shortcode}[0]{email}, 'johndoe@example.com';
+		ok $result->data->{shortcode}{valid};
+		is $result->data->{shortcode}{email}, 'johndoe@example.com';
 	};
 };
 
