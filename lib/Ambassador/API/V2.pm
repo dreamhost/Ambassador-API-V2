@@ -1,5 +1,4 @@
 package Ambassador::API::V2;
-# ABSTRACT: Speak with the getambassador.com API v2
 
 use Moo;
 use v5.10;
@@ -12,58 +11,15 @@ use Ambassador::API::V2::Result;
 
 our $VERSION = 0.001;
 
-=head1 SYNOPSIS
-
-    use Ambassador::API::V2;
-
-    my $api = Ambassador::API::V2->new(
-        username	=> $app_username,
-        key			=> $app_key
-    );
-
-    my $result = $api->post('/event/record/' => {
-        email			=> 'fake@fakeity.fake',
-        campaign_uid	=> 1234
-    });
-
-    my $result = $api->get('/shortcode/get/' => {
-        short_code	=> $mbsy,
-    });
-
-=head1 DESCRIPTION
-
-Speak with the L<getambassador.com> API version 2. See
-L<https://docs.getambassador.com>.
-
-=attr username
-
-The username for your app. C<YOUR_APP_USERNAME> in the API docs.
-
-=cut
-
 has username => (
     is       => 'ro',
     required => 1
 );
 
-=attr key
-
-The key for your app. C<YOUR_APP_KEY> in the API docs.
-
-=cut
-
 has key => (
     is       => 'ro',
     required => 1
 );
-
-=attr url
-
-The URL to call.
-
-Defaults to L<https://getambassador.com/api/v2/>
-
-=cut
 
 has url => (
     is     => 'ro',
@@ -83,34 +39,6 @@ has http => (
         );
     }
 );
-
-=method new
-
-    my $api = Ambassador::API::V2->new(
-        %attributes
-    );
-
-Creates a new Ambassador::API::V2 object.
-
-=cut
-
-=method post
-
-=method get
-
-    my $response = $api->post($method, \%args);
-    my $response = $api->get($method, \%args);
-
-Call an Ambassador API C<$method> with the given C<%args>.
-
-If successful, it returns an L<Ambassdor::API::V2::Response>.
-If it fails, it will throw an L<Ambassador::API::V2::Error>.
-
-See the L<Ambassador API docs|https://docs.getambassador.com/docs/>
-for what $methods are available, what C<%args> they take, and which
-should be called with C<get> or C<post>.
-
-=cut
 
 sub _make_url {
     my $self   = shift;
@@ -160,3 +88,100 @@ sub get {
 }
 
 1;
+
+__END__
+
+=head1 NAME
+
+Ambassador::API::V2 - Speak with the getambassador.com API v2
+
+=head1 SYNOPSIS
+
+    use Ambassador::API::V2;
+
+    my $api = Ambassador::API::V2->new(
+        username => $app_username,
+        key      => $app_key
+    );
+
+    my $result = $api->post(
+        '/event/record/' => {
+            email        => 'fake@fakeity.fake',
+            campaign_uid => 1234
+        }
+    );
+
+    my $result = $api->get(
+        '/shortcode/get/' => {
+            short_code => $mbsy,
+        }
+    );
+
+=head1 DESCRIPTION
+
+Speak with the L<getambassador.com> API version 2. See
+L<https://docs.getambassador.com>.
+
+
+=head1 CONSTRUCTOR
+
+    my $api = Ambassador::API::V2->new(
+        username => $app_username,
+        key      => $app_key
+    );
+
+=over 4
+
+=item key
+
+The key for your app. C<YOUR_APP_KEY> in the API docs.
+
+=item username
+
+The username for your app. C<YOUR_APP_USERNAME> in the API docs.
+
+=item url
+
+The URL to call.
+
+Defaults to L<https://getambassador.com/api/v2/>
+
+=back
+
+=head1 METHODS
+
+=over 4
+
+=item $api->post($method, \%args);
+
+=item $api->get($method, \%args);
+
+    my $response = $api->post($method, \%args);
+    my $response = $api->get($method, \%args);
+
+Call an Ambassador API C<$method> with the given C<%args>.
+
+If successful, it returns an L<Ambassdor::API::V2::Response>.
+If it fails, it will throw an L<Ambassador::API::V2::Error>.
+
+See the L<Ambassador API docs|https://docs.getambassador.com/docs/>
+for what $methods are available, what C<%args> they take, and which
+should be called with C<get> or C<post>.
+
+=back
+
+=head1 SOURCE
+
+The source code repository for Ambassador-API-V2 can be found at
+F<https://github.com/dreamhost/Ambassador-API-V2>.
+
+=head1 COPYRIGHT
+
+Copyright 2016 Dreamhost E<lt>dev-notify@hq.newdream.netE<gt>.
+
+This program is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself.
+
+See F<http://dev.perl.org/licenses/>
+
+=cut

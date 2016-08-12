@@ -1,5 +1,4 @@
 package Ambassador::API::V2::Error;
-# ABSTRACT: An error response from the Ambassador API
 
 use Moo;
 use Types::Standard ':types';
@@ -8,16 +7,6 @@ with 'Ambassador::API::V2::Role::Response';
 use overload
     '""'     => \&as_string,
     fallback => 1;
-
-=head1 DESCRIPTION
-
-L<Ambassador::API::V2::Role::Response> plus...
-
-=attr errors
-
-An array ref of errors returned by the Ambassador API.
-
-=cut
 
 has errors => (
     is  => 'lazy',
@@ -29,15 +18,6 @@ sub _build_errors {
 
     return $self->response->{errors}{error};
 }
-
-=method as_string
-
-  my $string = $error->as_string;
-
-Returns the C<< $error->message >> and C<< $error->errors >> formatted
-for human consumption.
-
-=cut
 
 sub _code_and_message {
     my $self = shift;
@@ -51,12 +31,59 @@ sub as_string {
     return join '', map { "$_\n" } $self->_code_and_message, @{$self->errors};
 }
 
-=head2 Overloading
+1;
+
+__END__
+
+=head1 NAME
+
+Ambassador::API::V2::Error - An error response from the Ambassador API
+
+=head1 DESCRIPTION
+
+L<Ambassador::API::V2::Role::Response> plus...
+
+=head1 ATTRIBUTES
+
+=over 4
+
+=item errors
+
+An array ref of errors returned by the Ambassador API.
+
+=back
+
+=head1 METHODS
+
+=over 4
+
+=item $string = $error->as_string
+
+  my $string = $error->as_string;
+
+Returns the C<< $error->message >> and C<< $error->errors >> formatted
+for human consumption.
+
+=back
+
+=head1 Overloading
 
 If used as a string, C<as_string> will be called.
 
     print $error;
 
-=cut
+=head1 SOURCE
 
-1;
+The source code repository for Ambassador-API-V2 can be found at
+F<https://github.com/dreamhost/Ambassador-API-V2>.
+
+=head1 COPYRIGHT
+
+Copyright 2016 Dreamhost E<lt>dev-notify@hq.newdream.netE<gt>.
+
+This program is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself.
+
+See F<http://dev.perl.org/licenses/>
+
+=cut
