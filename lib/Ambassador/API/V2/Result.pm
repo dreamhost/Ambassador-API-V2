@@ -16,15 +16,15 @@ The "data" portion of an Ambassador response as a hash ref.
 =cut
 
 has data => (
-	is			=> 'lazy',
-	isa			=> HashRef,
-	required	=> 1
+    is       => 'lazy',
+    isa      => HashRef,
+    required => 1
 );
 
 sub _build_data {
-	my $self = shift;
+    my $self = shift;
 
-	return $self->response->{data};
+    return $self->response->{data};
 }
 
 1;

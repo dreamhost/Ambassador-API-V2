@@ -12,10 +12,10 @@ Returns a JSON::MaybeXS object.
 
 # Configure and cache the JSON object
 has json => (
-	is			=> 'ro',
-	default		=> sub {
-		return JSON->new->utf8(1);
-	}
+    is      => 'ro',
+    default => sub {
+        return JSON->new->utf8(1);
+    }
 );
 
 1;

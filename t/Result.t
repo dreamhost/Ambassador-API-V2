@@ -2,13 +2,13 @@ use Test2::Bundle::Extended -target => 'Ambassador::API::V2::Result';
 use Test2::Tools::Spec;
 
 describe Result => sub {
-	tests shortcode_example => sub {
-		my %response = (
-			success		=> 1,
-			status		=> 200,
-			url			=> 'https://example.com/foo/bar',
-			reason		=> 'Because',
-			content		=> <<'CONTENT',
+    tests shortcode_example => sub {
+        my %response = (
+            success => 1,
+            status  => 200,
+            url     => 'https://example.com/foo/bar',
+            reason  => 'Because',
+            content => <<'CONTENT',
 {
   "response": {
     "code": "200",
@@ -33,15 +33,15 @@ describe Result => sub {
   }
 }
 CONTENT
-		);
+        );
 
-		my $result = $CLASS->new_from_response( \%response );
-		is $result->code, 		200;
-		is $result->message, 	"OK: The request was successful. See response body for additional data.";
-		ok $result->is_success;
-		ok $result->data->{shortcode}{valid};
-		is $result->data->{shortcode}{email}, 'johndoe@example.com';
-	};
+        my $result = $CLASS->new_from_response(\%response);
+        is $result->code,    200;
+        is $result->message, "OK: The request was successful. See response body for additional data.";
+        ok $result->is_success;
+        ok $result->data->{shortcode}{valid};
+        is $result->data->{shortcode}{email}, 'johndoe@example.com';
+    };
 };
 
 done_testing;

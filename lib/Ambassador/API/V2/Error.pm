@@ -6,8 +6,8 @@ use Types::Standard ':types';
 with 'Ambassador::API::V2::Role::Response';
 
 use overload
-  '""' 		=> \&as_string,
-  fallback 	=> 1;
+    '""'     => \&as_string,
+    fallback => 1;
 
 =head1 DESCRIPTION
 
@@ -20,16 +20,15 @@ An array ref of errors returned by the Ambassador API.
 =cut
 
 has errors => (
-	is		=> 'lazy',
-	isa		=> ArrayRef,
+    is  => 'lazy',
+    isa => ArrayRef,
 );
 
 sub _build_errors {
-	my $self = shift;
+    my $self = shift;
 
-	return $self->response->{errors}{error};
+    return $self->response->{errors}{error};
 }
-
 
 =method as_string
 
@@ -41,17 +40,16 @@ for human consumption.
 =cut
 
 sub _code_and_message {
-	my $self = shift;
+    my $self = shift;
 
-	return $self->code .': '.$self->message;
+    return $self->code . ': ' . $self->message;
 }
 
 sub as_string {
-	my $self = shift;
+    my $self = shift;
 
-	return join '', map { "$_\n" } $self->_code_and_message, @{$self->errors};
+    return join '', map { "$_\n" } $self->_code_and_message, @{$self->errors};
 }
-
 
 =head2 Overloading
 

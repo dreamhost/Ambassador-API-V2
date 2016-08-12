@@ -6,7 +6,6 @@ use Carp;
 use Types::Standard ":types";
 with 'Ambassador::API::V2::Role::HasJSON';
 
-
 =head1 DESCRIPTION
 
 Encapsulates the Ambassador Response Format.
@@ -20,9 +19,9 @@ The original HTTP::Tiny response.
 =cut
 
 has http_response => (
-	is			=> 'ro',
-	isa			=> HashRef,
-	required	=> 1,
+    is       => 'ro',
+    isa      => HashRef,
+    required => 1,
 );
 
 =attr response
@@ -42,41 +41,41 @@ The Ambassador "message" field.
 =cut
 
 has response => (
-	is			=> 'lazy',
-	isa			=> HashRef,
-	required	=> 1,
+    is       => 'lazy',
+    isa      => HashRef,
+    required => 1,
 );
 
 sub _build_response {
-	my $self = shift;
+    my $self = shift;
 
-	my $content = eval { $self->json->decode($self->http_response->{content}); };
-	croak "Failed to decode @{[ $self->http_response->{content} ]}" if !$content;
-	return $content->{response};
+    my $content = eval { $self->json->decode($self->http_response->{content}); };
+    croak "Failed to decode @{[ $self->http_response->{content} ]}" if !$content;
+    return $content->{response};
 }
 
 has code => (
-	is			=> 'lazy',
-	isa			=> Int,
-	required	=> 1,
+    is       => 'lazy',
+    isa      => Int,
+    required => 1,
 );
 
 sub _build_code {
-	my $self = shift;
+    my $self = shift;
 
-	return $self->response->{code};
+    return $self->response->{code};
 }
 
 has message => (
-	is			=> 'lazy',
-	isa			=> Str,
-	required	=> 1
+    is       => 'lazy',
+    isa      => Str,
+    required => 1
 );
 
 sub _build_message {
-	my $self = shift;
+    my $self = shift;
 
-	return $self->response->{message};
+    return $self->response->{message};
 }
 
 =method new_from_response
@@ -90,10 +89,10 @@ Returns a new object from an HTTP::Tiny response hash ref.
 =cut
 
 sub new_from_response {
-	my $class = shift;
-	my $res = shift;
+    my $class = shift;
+    my $res   = shift;
 
-	return $class->new( http_response => $res );
+    return $class->new(http_response => $res);
 }
 
 =method is_success
@@ -103,9 +102,9 @@ Returns whether the repsonse was successful or not.
 =cut
 
 sub is_success {
-	my $self = shift;
+    my $self = shift;
 
-	return $self->code == 200;
+    return $self->code == 200;
 }
 
 =head1 SEE ALSO

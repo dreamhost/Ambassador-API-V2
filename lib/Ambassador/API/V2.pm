@@ -42,8 +42,8 @@ The username for your app. C<YOUR_APP_USERNAME> in the API docs.
 =cut
 
 has username => (
-	is 			=> 'ro',
-	required 	=> 1
+    is       => 'ro',
+    required => 1
 );
 
 =attr key
@@ -53,8 +53,8 @@ The key for your app. C<YOUR_APP_KEY> in the API docs.
 =cut
 
 has key => (
-	is 			=> 'ro',
-	required	=> 1
+    is       => 'ro',
+    required => 1
 );
 
 =attr url
@@ -66,26 +66,23 @@ Defaults to L<https://getambassador.com/api/v2/>
 =cut
 
 has url => (
-    is			=> 'ro',
-	coerce		=> sub {
-		return URI->new($_[0]);
-	},
-	default		=> sub { 'https://getambassador.com/api/v2/' }
+    is     => 'ro',
+    coerce => sub {
+        return URI->new($_[0]);
+    },
+    default => sub { 'https://getambassador.com/api/v2/' }
 );
 
 # Configure and cache the HTTP::Tiny object
 has http => (
-    is			=> 'ro',
-    default		=> sub {
+    is      => 'ro',
+    default => sub {
         return HTTP::Tiny->new(
-			agent			=> "Ambassador-API-V2/$VERSION",
-			default_headers	=> {
-				'Content-Type' => 'application/json'
-			}
-		);
+            agent           => "Ambassador-API-V2/$VERSION",
+            default_headers => {'Content-Type' => 'application/json'}
+        );
     }
 );
-
 
 =method new
 
@@ -116,50 +113,50 @@ should be called with C<get> or C<post>.
 =cut
 
 sub _make_url {
-	my $self = shift;
-	my $method = shift;
+    my $self   = shift;
+    my $method = shift;
 
-	my $url = $self->url->clone;
+    my $url = $self->url->clone;
 
-	# Ambassador is very sensitive to double slashes.
-	my $path = $url->path . join '/', $self->username, $self->key, 'json', $method;
-	$path =~ s{/{2,}}{/}g;
+    # Ambassador is very sensitive to double slashes.
+    my $path = $url->path . join '/', $self->username, $self->key, 'json', $method;
+    $path =~ s{/{2,}}{/}g;
 
-	$url->path($path);
+    $url->path($path);
 
-	return $url;
+    return $url;
 }
 
 sub _handle_response {
-	my $self = shift;
-	my($response) = @_;
+    my $self = shift;
+    my ($response) = @_;
 
-	die Ambassador::API::V2::Error->new_from_response($response) if !$response->{success};
+    die Ambassador::API::V2::Error->new_from_response($response) if !$response->{success};
 
-	return Ambassador::API::V2::Result->new_from_response($response);
+    return Ambassador::API::V2::Result->new_from_response($response);
 }
 
 sub _request {
-	my $self = shift;
-	my($type, $method, $args) = @_;
+    my $self = shift;
+    my ($type, $method, $args) = @_;
 
-	my $url = $self->_make_url($method);
+    my $url = $self->_make_url($method);
 
-	my $opts = {};
-	$opts->{content} = $self->json->encode($args) if $args;
-	my $response = $self->http->request( uc $type, $url, $opts );
+    my $opts = {};
+    $opts->{content} = $self->json->encode($args) if $args;
+    my $response = $self->http->request(uc $type, $url, $opts);
 
-	return $self->_handle_response($response);
+    return $self->_handle_response($response);
 }
 
 sub post {
-	my $self = shift;
-	return $self->_request('POST', @_);
+    my $self = shift;
+    return $self->_request('POST', @_);
 }
 
 sub get {
-	my $self = shift;
-	return $self->_request('GET', @_);
+    my $self = shift;
+    return $self->_request('GET', @_);
 }
 
 1;
