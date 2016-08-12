@@ -3,6 +3,8 @@ package Ambassador::API::V2::Role::HasJSON;
 use Moo::Role;
 use JSON::MaybeXS;
 
+our $VERSION = 0.001;
+
 # Configure and cache the JSON object
 has json => (
     is      => 'ro',

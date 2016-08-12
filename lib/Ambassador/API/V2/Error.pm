@@ -4,6 +4,8 @@ use Moo;
 use Types::Standard ':types';
 with 'Ambassador::API::V2::Role::Response';
 
+our $VERSION = 0.001;
+
 use overload
     '""'     => \&as_string,
     fallback => 1;
