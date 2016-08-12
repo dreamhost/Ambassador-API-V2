@@ -9,7 +9,7 @@ use URI;
 use Ambassador::API::V2::Error;
 use Ambassador::API::V2::Result;
 
-our $VERSION = '0.001';
+our $VERSION = '0.002';
 
 has username => (
     is       => 'ro',

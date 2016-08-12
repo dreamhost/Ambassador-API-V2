@@ -4,7 +4,7 @@ use Moo;
 use Types::Standard ":types";
 with 'Ambassador::API::V2::Role::Response';
 
-our $VERSION = '0.001';
+our $VERSION = '0.002';
 
 has data => (
     is       => 'lazy',

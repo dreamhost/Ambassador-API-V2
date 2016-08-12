@@ -5,7 +5,7 @@ use Carp;
 use Types::Standard ":types";
 with 'Ambassador::API::V2::Role::HasJSON';
 
-our $VERSION = '0.001';
+our $VERSION = '0.002';
 
 has http_response => (
     is       => 'ro',
